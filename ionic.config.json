@@ -1,0 +1,7 @@
+{
+  "name": "smartcafet",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
