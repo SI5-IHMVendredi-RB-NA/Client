@@ -11,6 +11,22 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'client',
+    loadChildren: () => import('./pages/client/client.module').then( m => m.ClientPageModule)
+  },
+  {
+    path: 'cashier',
+    loadChildren: () => import('./pages/cashier/cashier.module').then( m => m.CashierPageModule)
+  },
+  {
+    path: 'preparator',
+    loadChildren: () => import('./pages/preparator/preparator.module').then( m => m.PreparatorPageModule)
+  },
+  {
+    path: 'qr-code-repas',
+    loadChildren: () => import('./pages/qr-code-repas/qr-code-repas.module').then( m => m.QrCodeRepasPageModule)
+  },
 ];
 
 @NgModule({

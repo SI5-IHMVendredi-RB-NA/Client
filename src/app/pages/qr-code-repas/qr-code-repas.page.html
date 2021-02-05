@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>qr-code-repas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class = "center">
+    <qrcode [qrdata]="orderJSON" [width]="256" [size]="256" [level]="'M'"></qrcode>
+  </div>
+  
+
+</ion-content>

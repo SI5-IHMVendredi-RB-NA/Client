@@ -1,0 +1,22 @@
+<ion-card  [ngStyle]="{'background':color1}" id = "repas-{{repas.id}}">
+  <img src="../../assets/sandwich.jpg" />
+  <ion-card-header>
+    <ion-card-subtitle [ngStyle]="{'color':textColor}" id = "subtitle-{{repas.id}}">Prix: {{repas.prix}}€</ion-card-subtitle>
+    <ion-card-title [ngStyle]="{'color':textColor}" id = "title-{{repas.id}}">{{repas.nom}}</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-item>
+      - {{repas.entree}}
+    </ion-item>
+    <ion-item>
+      - {{repas.plat}}
+    </ion-item>
+    <ion-item>
+      - {{repas.dessert}}
+    </ion-item>
+    <ion-item>
+      - {{repas.boisson}}
+    </ion-item>
+  </ion-card-content>
+</ion-card>
