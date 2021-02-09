@@ -3,25 +3,13 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'client',
     pathMatch: 'full'
   },
   {
     path: 'client',
     loadChildren: () => import('./pages/client/client.module').then( m => m.ClientPageModule)
-  },
-  {
-    path: 'cashier',
-    loadChildren: () => import('./pages/cashier/cashier.module').then( m => m.CashierPageModule)
-  },
-  {
-    path: 'preparator',
-    loadChildren: () => import('./pages/preparator/preparator.module').then( m => m.PreparatorPageModule)
   },
   {
     path: 'qr-code-repas',
