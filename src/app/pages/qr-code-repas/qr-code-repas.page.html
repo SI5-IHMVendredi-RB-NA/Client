@@ -1,12 +1,21 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>qr-code-repas</ion-title>
+    <ion-title>Commande validée</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
   <div class = "center">
+    <ion-text id = "successText">
+      <h2>Salut {{order.client.nom}}, Votre commande <span style = "font-weight: bold;">#{{order.id}}</span> a été validée avec succès !</h2>
+    </ion-text>
+    <div id = "successImg">
+      <img src="../../../assets/success.png" />
+    </div>
+    <ion-text id = "successText">
+      <h3>Veuillez présenter ce <span style = "font-weight: bold;">QRCode</span> à la caisse pour procéder au paiement</h3>
+    </ion-text>
     <qrcode [qrdata]="orderJSON" [width]="256" [size]="256" [level]="'M'"></qrcode>
   </div>
   
