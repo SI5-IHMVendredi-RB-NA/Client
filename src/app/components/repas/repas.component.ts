@@ -1,3 +1,4 @@
+import { ELocalNotificationTriggerUnit, LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Commande } from './../../models/Commande';
 import { HttpClient } from '@angular/common/http';
 import { Dessert } from './../../models/Dessert';
@@ -5,7 +6,7 @@ import { Sandwich } from './../../models/Sandwich';
 import { Repas } from './../../models/Repas';
 import { RepasService } from './../../services/repas/repas.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { AnimationController, NavController, ToastController } from '@ionic/angular';
+import { AnimationController, NavController, ToastController, Platform } from '@ionic/angular';
 import ENTREE from 'src/app/mocks/Entree';
 import { Entree } from 'src/app/models/Entree';
 import { Boisson } from 'src/app/models/Boisson';
@@ -32,9 +33,39 @@ export class RepasComponent implements OnInit {
     private animationCtrl: AnimationController,
     private navCtrl: NavController,
     private http: HttpClient,
-    private repasService: RepasService) { }
+    private repasService: RepasService,
+    private plt: Platform,
+    private localNotification: LocalNotifications) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.localNotification.requestPermission();
+    this.plt.ready().then(() => {
+      this.localNotification.on('click').subscribe(res => {
+        let msg = res.data? res.data.mydata : '';
+        console.log(msg);
+      });
+
+      this.localNotification.on('trigger').subscribe(res => {
+        let msg = res.data? res.data.mydata : '';
+        console.log(msg);
+      });
+    })
+  }
+
+  scheduleNotification() {
+    this.localNotification.schedule({
+      id: 1,
+      title: 'Etat de votre commande',
+      text: 'Votre commande est prête à être retirée !',
+      data: {page: 'myPage'},
+      trigger: {in: 5, unit: ELocalNotificationTriggerUnit.SECOND}
+    })
+  }
+
+  getAll() {
+    this.localNotification.getAll().then(res => {
+
+    })
   }
 
   async presentToast() {
@@ -69,6 +100,7 @@ export class RepasComponent implements OnInit {
         order: JSON.stringify(order)
       }
   };
+  this.scheduleNotification();
   this.navCtrl.navigateForward(['qr-code-repas'], navigationExtras);
   }
 

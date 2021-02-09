@@ -14,7 +14,7 @@ const routes: Routes = [
   {
     path: 'qr-code-repas',
     loadChildren: () => import('./pages/qr-code-repas/qr-code-repas.module').then( m => m.QrCodeRepasPageModule)
-  },
+  }
 ];
 
 @NgModule({
