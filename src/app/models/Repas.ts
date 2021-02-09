@@ -1,9 +1,12 @@
+import { Dessert } from './Dessert';
+import { Sandwich } from './Sandwich';
+import { Entree } from './Entree';
+import { Boisson } from './Boisson';
 export class Repas {
     id: number;
-    nom: string;
     prix: number;
-    entree: string;
-    plat: string;
-    dessert: string;
-    boisson: string;
+    entree: Entree;
+    plat: Sandwich;
+    dessert: Dessert;
+    boisson: Boisson;
 }

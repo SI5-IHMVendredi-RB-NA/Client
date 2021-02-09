@@ -33,7 +33,7 @@ export class CashierPage implements OnInit {
 
   getRepasFromOrder()
   {
-    return this.order.repas.nom + ', Prix : ' + this.order.repas.prix + '€';
+    return this.order.repas.plat.nom + ', Prix : ' + this.order.repas.prix + '€';
   }
 
   getClientFromOrder() 

@@ -1,5 +1,4 @@
 import { RepasComponent } from './../../components/repas/repas.component';
-import { RepasListComponent } from './../../components/repas-list/repas-list.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -19,6 +18,6 @@ import { HttpClientModule } from '@angular/common/http';
     ClientPageRoutingModule,
     HttpClientModule
   ],
-  declarations: [ClientPage, RepasListComponent, RepasComponent]
+  declarations: [ClientPage, RepasComponent]
 })
 export class ClientPageModule {}

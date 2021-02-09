@@ -1,22 +1,42 @@
-<ion-card  [ngStyle]="{'background':color1}" id = "repas-{{repas.id}}">
+<ion-card  [ngStyle]="{'background':color1}" id = "repas-{{getRepas().id}}">
   <img src="../../assets/sandwich.jpg" />
   <ion-card-header>
-    <ion-card-subtitle [ngStyle]="{'color':textColor}" id = "subtitle-{{repas.id}}">Prix: {{repas.prix}}€</ion-card-subtitle>
-    <ion-card-title [ngStyle]="{'color':textColor}" id = "title-{{repas.id}}">{{repas.nom}}</ion-card-title>
+    <ion-card-subtitle>Composez votre repas personnalisé</ion-card-subtitle>
+    <ion-card-title [ngStyle]="{'color':textColor}" id = "subtitle-{{getRepas().id}}">Prix: {{getRepas().prix}}€</ion-card-title>
   </ion-card-header>
 
   <ion-card-content>
     <ion-item>
-      - {{repas.entree}}
+      <ion-label>Choix d'Entree</ion-label>
+      <ion-select [(ngModel)]="selectedEntree" (ionChange)="setEntree()" placeholder="Selectionner..." [compareWith]="compareWith" okText="OK" cancelText="Annuler">
+        <ion-select-option *ngFor = "let entree of getEntrees()" [value] = "entree">{{entree.nom}}</ion-select-option>
+      </ion-select>
     </ion-item>
+
     <ion-item>
-      - {{repas.plat}}
+      <ion-label>Choix de Sandwich</ion-label>
+      <ion-select [(ngModel)]="selectedSandwich" (ionChange)="setSandwich()" placeholder="Selectionner..." [compareWith]="compareWith" okText="OK" cancelText="Annuler">
+        <ion-select-option *ngFor = "let sandwich of getSandwichs()" [value] = "entree">{{sandwich.nom}}</ion-select-option>
+      </ion-select>
     </ion-item>
+
     <ion-item>
-      - {{repas.dessert}}
+      <ion-label>Choix de Dessert</ion-label>
+      <ion-select [(ngModel)]="selectedDessert" (ionChange)="setDessert()" placeholder="Selectionner..." [compareWith]="compareWith" okText="OK" cancelText="Annuler">
+        <ion-select-option *ngFor = "let dessert of getDesserts()" [value] = "entree">{{dessert.nom}}</ion-select-option>
+      </ion-select>
     </ion-item>
+
     <ion-item>
-      - {{repas.boisson}}
+      <ion-label>Choix de Boisson</ion-label>
+      <ion-select [(ngModel)]="selectedBoisson" (ionChange)="setBoisson()" placeholder="Selectionner..." [compareWith]="compareWith" okText="OK" cancelText="Annuler">
+        <ion-select-option *ngFor = "let boisson of getBoissons()" [value] = "entree">{{boisson.nom}}</ion-select-option>
+      </ion-select>
     </ion-item>
   </ion-card-content>
 </ion-card>
+
+
+<div id = "orderBtn">
+  <ion-button color="success" (click) = "order()">Commander maintenant</ion-button>
+</div>
