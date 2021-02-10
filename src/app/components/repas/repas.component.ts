@@ -31,7 +31,9 @@ export class RepasComponent implements OnInit {
   selectedBoisson: Boisson;
   counter: number = 0;
 
-  constructor(    
+  id: number;
+
+  constructor(
     private toastController: ToastController,
     private animationCtrl: AnimationController,
     private navCtrl: NavController,
@@ -53,9 +55,10 @@ export class RepasComponent implements OnInit {
         console.log(msg);
       });
     });
-
+    this.id = Date.now();
+    const name = 'Nouamane';
     this.sseEvent
-    .getServerSentEvent('http://localhost:9428/api/user/stream')
+    .getServerSentEvent('http://192.168.1.78:9428/api/user/stream/' + this.id + '/' + name)
     .subscribe(data => {
       console.log(data.data);
       //const order = JSON.parse(data.data);
@@ -77,7 +80,7 @@ export class RepasComponent implements OnInit {
   getAll() {
     this.localNotification.getAll().then(res => {
 
-    })
+    });
   }
 
   async presentToast() {
@@ -102,9 +105,15 @@ export class RepasComponent implements OnInit {
     order.id = 102 + this.counter;
     order.status = Status.PROGRESS;
     order.repas = this.repasService.getRepas();
+    order.idClient = this.id;
     order.client = CLIENT;
     console.log(this.repasService.getRepas());
-    this.http.post<Commande>('http://localhost:9428/api/order', this.repasService.getRepas()).subscribe(data => {
+    /*this.http.post<Commande>('http://localhost:9428/api/order', this.repasService.getRepas()).subscribe(data => {
+      console.log(data);
+    });
+
+     */
+    this.http.post<Commande>('http://192.168.1.78:9428/api/order', order).subscribe(data => {
       console.log(data);
     });
     this.presentToast();
@@ -114,7 +123,7 @@ export class RepasComponent implements OnInit {
         order: JSON.stringify(order)
       }
   };
-  this.scheduleNotification();
+  //this.scheduleNotification();
   this.navCtrl.navigateForward(['qr-code-repas'], navigationExtras);
   }
 
@@ -151,7 +160,7 @@ export class RepasComponent implements OnInit {
   {
     this.repasService.setEntree(this.selectedEntree);
   }
-  
+
   setSandwich()
   {
     this.repasService.setSandwich(this.selectedSandwich);

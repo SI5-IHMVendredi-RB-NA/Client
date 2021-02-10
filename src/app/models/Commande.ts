@@ -5,5 +5,6 @@ export class Commande {
     id: number;
     repas: Repas;
     client: Client;
+    idClient: number;
     status: Status;
 }
