@@ -1,3 +1,4 @@
+import { ServerSentEventService } from './../../services/server-sent-event.service';
 import { ELocalNotificationTriggerUnit, LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Commande } from './../../models/Commande';
 import { HttpClient } from '@angular/common/http';
@@ -15,6 +16,7 @@ import DESSERT from 'src/app/mocks/Dessert';
 import BOISSON from 'src/app/mocks/Boisson';
 import { NavigationExtras } from '@angular/router';
 import CLIENT from 'src/app/mocks/Client';
+import { Status } from 'src/app/models/Status';
 
 @Component({
   selector: 'app-repas',
@@ -27,6 +29,7 @@ export class RepasComponent implements OnInit {
   selectedSandwich: Sandwich;
   selectedDessert: Dessert;
   selectedBoisson: Boisson;
+  counter: number = 0;
 
   constructor(    
     private toastController: ToastController,
@@ -35,10 +38,10 @@ export class RepasComponent implements OnInit {
     private http: HttpClient,
     private repasService: RepasService,
     private plt: Platform,
+    private sseEvent: ServerSentEventService,
     private localNotification: LocalNotifications) { }
 
-  async ngOnInit() {
-    await this.localNotification.requestPermission();
+   ngOnInit() {
     this.plt.ready().then(() => {
       this.localNotification.on('click').subscribe(res => {
         let msg = res.data? res.data.mydata : '';
@@ -49,7 +52,16 @@ export class RepasComponent implements OnInit {
         let msg = res.data? res.data.mydata : '';
         console.log(msg);
       });
-    })
+    });
+
+    this.sseEvent
+    .getServerSentEvent('http://localhost:9428/api/user/stream')
+    .subscribe(data => {
+      console.log(data.data);
+      //const order = JSON.parse(data.data);
+      //this.orders.push(order.order);
+      this.scheduleNotification();
+    });
   }
 
   scheduleNotification() {
@@ -85,12 +97,14 @@ export class RepasComponent implements OnInit {
 
   order(): void
   {
+    this.counter += 1;
     let order: Commande = new Commande();
-    order.id = 10;
+    order.id = 102 + this.counter;
+    order.status = Status.PROGRESS;
     order.repas = this.repasService.getRepas();
     order.client = CLIENT;
     console.log(this.repasService.getRepas());
-    this.http.post<Repas>('http://localhost:9428/api/repas', this.repasService.getRepas()).subscribe(data => {
+    this.http.post<Commande>('http://localhost:9428/api/order', this.repasService.getRepas()).subscribe(data => {
       console.log(data);
     });
     this.presentToast();

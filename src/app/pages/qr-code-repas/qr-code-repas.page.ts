@@ -19,6 +19,7 @@ export class QrCodeRepasPage implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.order = JSON.parse(params['order']);
       this.orderJSON = params['order'];
+      console.log(this.orderJSON);
     });
 
     console.log(this.order);
