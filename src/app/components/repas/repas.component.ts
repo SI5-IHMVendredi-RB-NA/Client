@@ -64,20 +64,20 @@ export class RepasComponent implements OnInit {
     this.id = Date.now();
     const name = this.clientName;
     this.sseEvent
-    .getServerSentEvent('http://192.168.1.78:9428/api/user/stream/' + this.id + '/' + name)
+    .getServerSentEvent('http://localhost/api/user/stream/' + this.id + '/' + name)
     .subscribe(data => {
       console.log(data.data);
       //const order = JSON.parse(data.data);
       //this.orders.push(order.order);
-      this.scheduleNotification();
+      this.scheduleNotification('Votre commande est prête à être retirée !');
     });
   }
 
-  scheduleNotification() {
+  scheduleNotification(message: string) {
     this.localNotification.schedule({
       id: 1,
       title: 'Etat de votre commande',
-      text: 'Votre commande est prête à être retirée !',
+      text: message,
       data: {page: 'myPage'},
       trigger: {in: 5, unit: ELocalNotificationTriggerUnit.SECOND}
     })
@@ -120,7 +120,7 @@ export class RepasComponent implements OnInit {
     });
 
      */
-    this.http.post<Commande>('http://192.168.1.78:9428/api/order', order).subscribe(data => {
+    this.http.post<Commande>('http://localhost:9428/api/order', order).subscribe(data => {
       console.log(data);
     });
     this.presentToast();
@@ -130,7 +130,7 @@ export class RepasComponent implements OnInit {
         order: JSON.stringify(order)
       }
   };
-  //this.scheduleNotification();
+  this.scheduleNotification('Votre commande a été validé avec succès !');
   this.navCtrl.navigateForward(['qr-code-repas'], navigationExtras);
   }
 
