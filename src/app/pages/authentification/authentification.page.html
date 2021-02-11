@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Authentification</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div id = "student-icon">
+    <img src="../../../assets/user.png" />
+  </div>
+  
+
+  <ion-text>
+    <h1>Smart'Cafet</h1>
+  </ion-text>
+
+  <ion-text>
+    <h2>Veuillez vous identifier</h2>
+  </ion-text>
+
+  <div class = "user-input">
+    <ion-input [(ngModel)] = "userName" placeholder = "Votre prénom..."></ion-input>
+  </div>
+  
+  <div class = "confirm-btn">
+    <ion-button expand = "block" color = "success" (click) = "goToOrderPage()">Confirmer</ion-button>
+  </div>
+  
+
+</ion-content>

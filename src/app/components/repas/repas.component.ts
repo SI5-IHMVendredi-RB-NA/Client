@@ -14,7 +14,7 @@ import { Boisson } from 'src/app/models/Boisson';
 import SANDWICH from 'src/app/mocks/Sandwich';
 import DESSERT from 'src/app/mocks/Dessert';
 import BOISSON from 'src/app/mocks/Boisson';
-import { NavigationExtras } from '@angular/router';
+import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import CLIENT from 'src/app/mocks/Client';
 import { Status } from 'src/app/models/Status';
 
@@ -31,6 +31,7 @@ export class RepasComponent implements OnInit {
   selectedBoisson: Boisson;
   counter: number = 0;
 
+  clientName: string;
   id: number;
 
   constructor(
@@ -41,9 +42,14 @@ export class RepasComponent implements OnInit {
     private repasService: RepasService,
     private plt: Platform,
     private sseEvent: ServerSentEventService,
-    private localNotification: LocalNotifications) { }
+    private localNotification: LocalNotifications,
+    private activatedRoute: ActivatedRoute) { }
 
    ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.clientName = params['username'];
+    });
+
     this.plt.ready().then(() => {
       this.localNotification.on('click').subscribe(res => {
         let msg = res.data? res.data.mydata : '';
@@ -56,7 +62,7 @@ export class RepasComponent implements OnInit {
       });
     });
     this.id = Date.now();
-    const name = 'Nouamane';
+    const name = this.clientName;
     this.sseEvent
     .getServerSentEvent('http://192.168.1.78:9428/api/user/stream/' + this.id + '/' + name)
     .subscribe(data => {
@@ -107,6 +113,7 @@ export class RepasComponent implements OnInit {
     order.repas = this.repasService.getRepas();
     order.idClient = this.id;
     order.client = CLIENT;
+    order.client.nom = this.clientName;
     console.log(this.repasService.getRepas());
     /*this.http.post<Commande>('http://localhost:9428/api/order', this.repasService.getRepas()).subscribe(data => {
       console.log(data);

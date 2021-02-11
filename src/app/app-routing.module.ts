@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'client',
+    redirectTo: 'authentification',
     pathMatch: 'full'
   },
   {
@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: 'qr-code-repas',
     loadChildren: () => import('./pages/qr-code-repas/qr-code-repas.module').then( m => m.QrCodeRepasPageModule)
+  },
+  {
+    path: 'authentification',
+    loadChildren: () => import('./pages/authentification/authentification.module').then( m => m.AuthentificationPageModule)
   }
 ];
 
