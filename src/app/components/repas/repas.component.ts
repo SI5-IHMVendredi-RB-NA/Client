@@ -64,7 +64,7 @@ export class RepasComponent implements OnInit {
     this.id = Date.now();
     const name = this.clientName;
     this.sseEvent
-    .getServerSentEvent('http://localhost/api/user/stream/' + this.id + '/' + name)
+    .getServerSentEvent('http://localhost:9428/api/user/stream/' + this.id + '/' + name)
     .subscribe(data => {
       console.log(data.data);
       //const order = JSON.parse(data.data);
