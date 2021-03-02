@@ -17,6 +17,7 @@ import BOISSON from 'src/app/mocks/Boisson';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import CLIENT from 'src/app/mocks/Client';
 import { Status } from 'src/app/models/Status';
+import REPAS from 'src/app/mocks/Repas';
 
 @Component({
   selector: 'app-repas',
@@ -128,6 +129,38 @@ export class RepasComponent implements OnInit {
     let navigationExtras: NavigationExtras = {
       queryParams: {
         order: JSON.stringify(order)
+      }
+  };
+  this.scheduleNotification('Votre commande a été validé avec succès !');
+  this.navCtrl.navigateForward(['qr-code-repas'], navigationExtras);
+  }
+
+  orderBulkMock() {
+    let orderForQrPage: Commande;
+    REPAS.forEach(repas => {
+      this.counter += 1;
+      let order: Commande = new Commande();
+      order.id = 102 + this.counter;
+      order.status = Status.PROGRESS;
+      order.repas = repas;
+      order.idClient = this.id;
+      order.client = CLIENT;
+      order.client.nom = this.clientName;
+      orderForQrPage = order;
+      /*this.http.post<Commande>('http://localhost:9428/api/order', this.repasService.getRepas()).subscribe(data => {
+        console.log(data);
+      });
+  
+       */
+      this.http.post<Commande>('http://localhost:9428/api/order', order).subscribe(data => {
+        console.log(data);
+      });
+    });
+
+    this.presentToast();
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        order: JSON.stringify(orderForQrPage)
       }
   };
   this.scheduleNotification('Votre commande a été validé avec succès !');
