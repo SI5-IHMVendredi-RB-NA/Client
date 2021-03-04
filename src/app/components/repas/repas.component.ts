@@ -50,23 +50,12 @@ export class RepasComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       this.clientName = params['username'];
     });
-
-    this.plt.ready().then(() => {
-      this.localNotification.on('click').subscribe(res => {
-        let msg = res.data? res.data.mydata : '';
-        console.log(msg);
-      });
-
-      this.localNotification.on('trigger').subscribe(res => {
-        let msg = res.data? res.data.mydata : '';
-        console.log(msg);
-      });
-    });
     this.id = Date.now();
     const name = this.clientName;
     this.sseEvent
     .getServerSentEvent('http://10.189.174.180:9428/api/user/stream/' + this.id + '/' + name)
     .subscribe(data => {
+      console.log('commande ready');
       console.log(data.data);
       //const order = JSON.parse(data.data);
       //this.orders.push(order.order);
@@ -121,14 +110,22 @@ export class RepasComponent implements OnInit {
     });
 
      */
-    this.http.post<Commande>('http://localhost:9428/api/order', order).subscribe(data => {
+    this.http.post<Commande>('http://10.189.174.180:9428/api/order', order).subscribe(data => {
       console.log(data);
     });
     this.presentToast();
+    let orderQR = {
+      id : order.id,
+      client: order.client,
+      idClient: order.idClient,
+      status: order.status
+    };
     console.log(this.repasService.getRepas());
     let navigationExtras: NavigationExtras = {
       queryParams: {
-        order: JSON.stringify(order)
+        order: JSON.stringify(order),
+        client:  JSON.stringify(order.client),
+        orderQR: JSON.stringify(orderQR)
       }
   };
   this.scheduleNotification('Votre commande a été validé avec succès !');
@@ -152,15 +149,24 @@ export class RepasComponent implements OnInit {
       });
   
        */
-      this.http.post<Commande>('http://localhost:9428/api/order', order).subscribe(data => {
+      this.http.post<Commande>('http://10.189.174.180:9428/api/order', order).subscribe(data => {
         console.log(data);
       });
     });
 
     this.presentToast();
+    let orderQR = {
+      id : orderForQrPage.id,
+      client: orderForQrPage.client,
+      idClient: orderForQrPage.idClient,
+      status: orderForQrPage.status
+    };
     let navigationExtras: NavigationExtras = {
+      
       queryParams: {
-        order: JSON.stringify(orderForQrPage)
+        order: JSON.stringify(orderForQrPage),
+        client:  JSON.stringify(orderForQrPage.client),
+        orderQR: JSON.stringify(orderQR)
       }
   };
   this.scheduleNotification('Votre commande a été validé avec succès !');
